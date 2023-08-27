@@ -73,6 +73,9 @@ const extensions = [
     },
     addAttributes() {
       return {
+        language: {
+          default: 'ts',
+        },
         result: {
           default: null,
         },

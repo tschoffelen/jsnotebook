@@ -47,6 +47,10 @@ const html = `
           origConsoleLog(...args)
         }
 
+        const html = (...args) => {
+          hist.push(["HTML", ...args.map(anythingToString)]);
+        }
+
         const anythingToString = (anything) => {
           if (typeof anything === 'string') {
             return anything;
@@ -129,9 +133,6 @@ const Preview = ({ input, attributes, updateAttributes }) => {
     if (!input) return;
 
     setLoading(true);
-    if (!input.includes("\n") && !input.startsWith("return ")) {
-      input = `return ${input}`;
-    }
     input = `window.codeRunner = async function () { \n${input}\n }`;
     const { output, error } = await esBundle(input, true);
     if (error) {

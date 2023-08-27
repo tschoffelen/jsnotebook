@@ -6,6 +6,7 @@
   outline: none;
   width: 100%;
   min-height: 50vh;
+  @apply p-12 md:p-24;
 
   .is-empty::before {
     content: attr(data-placeholder);
@@ -18,7 +19,7 @@
   pre {
     .hljs-comment,
     .hljs-quote {
-      color: #616161;
+      @apply text-gray-400;
     }
 
     .hljs-variable,
