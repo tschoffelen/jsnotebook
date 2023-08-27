@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, useState, useId } from "react";
+import React, { useCallback, useRef, useEffect, useState, useId } from "react";
 import * as crc32 from "crc-32";
 
 import esBundle from "@/lib/bundler";
 import LogLine from "./LogLine";
+import debounce from "@/lib/hooks/debounce";
 
 const html = `
 <html>
@@ -128,7 +129,7 @@ const Preview = ({ input, attributes, updateAttributes }) => {
     });
   }, []);
 
-  const compile = async () => {
+  const compile = useCallback(debounce(async () => {
     input = input.trim();
     if (!input) return;
 
@@ -141,7 +142,7 @@ const Preview = ({ input, attributes, updateAttributes }) => {
       iframe.current?.contentWindow?.postMessage({ id, code: output }, "*");
     }
     setLoading(false);
-  };
+  }), []);
 
   return (
     <div className="preview-wrapper">
@@ -153,7 +154,7 @@ const Preview = ({ input, attributes, updateAttributes }) => {
         style={{ height: 0, width: 0, border: 0, opacity: 0 }}
       />
       {loading ? (
-        <progress>Loading</progress>
+        <div className="px-3 py-2 text-sm text-gray-500">Loading</div>
       ) : (
         result?.map(([type, ...args], i) => (
           <LogLine key={i} type={type} args={args} />

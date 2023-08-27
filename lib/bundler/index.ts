@@ -10,10 +10,43 @@ interface BundledResult {
   error: string;
 }
 
+let loaded = false;
+let isLoading = false;
+
+const loadEsbuild = async () => {
+  if (loaded) {
+    return;
+  }
+
+  if (isLoading) {
+    await new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (!isLoading) {
+          clearInterval(interval);
+          resolve("");
+        }
+      }, 100);
+    });
+    return;
+  }
+
+  try {
+    await esbuild.initialize({
+      worker: true,
+      wasmURL: "https://unpkg.com/esbuild-wasm/esbuild.wasm",
+    });
+    loaded = true;
+  } catch (error) {
+    console.log(error);
+  }
+  isLoading = false;
+};
+
 const esBundle = async (
   input: string,
   hasTypescript: boolean
 ): Promise<BundledResult> => {
+  await loadEsbuild();
   try {
     const result = await esbuild.build({
       entryPoints: ["index.js"],

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { EditorContent, useEditor, ReactNodeViewRenderer } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import StarterKit from "@tiptap/starter-kit";
@@ -14,9 +13,8 @@ import { lowlight } from "lowlight";
 
 import CodeBlockNode from "./block/CodeBlockNode";
 import SlashCommand from "./editor/SlashCommand";
-import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { defaultContent } from "./editor/defaultContent";
+import debounce from "@/lib/hooks/debounce";
 
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
@@ -74,7 +72,7 @@ const extensions = [
     addAttributes() {
       return {
         language: {
-          default: 'ts',
+          default: "ts",
         },
         result: {
           default: null,
@@ -91,27 +89,15 @@ const extensions = [
   SlashCommand,
 ];
 
-const Editor = () => {
-  const [content, setContent] = useLocalStorage(
-    "editor-content",
-    defaultContent
-  );
-  const [hydrated, setHydrated] = useState(false);
-
+const Editor = ({ content, onUpdate }) => {
   const editor = useEditor({
     extensions,
     content,
-    onUpdate: (e) => {
-      setContent(e.editor.getHTML()); // TODO: add debounce
-    },
+    onUpdate: debounce((e) => {
+      onUpdate(e.editor.getHTML());
+    }),
+    autofocus: content === "" ? "end" : false,
   });
-
-  useEffect(() => {
-    if (editor && content && !hydrated) {
-      editor.commands.setContent(content);
-      setHydrated(true);
-    }
-  }, [editor, content, hydrated]);
 
   return (
     <div className="prose max-w-none">
