@@ -9,11 +9,35 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tiptap/core": "^2.1.7",
+    "@tiptap/extension-code-block-lowlight": "^2.1.7",
+    "@tiptap/extension-document": "^2.1.7",
+    "@tiptap/extension-highlight": "^2.1.7",
+    "@tiptap/extension-link": "^2.1.7",
+    "@tiptap/extension-placeholder": "^2.1.7",
+    "@tiptap/extension-typography": "^2.1.7",
+    "@tiptap/pm": "^2.1.7",
+    "@tiptap/react": "^2.1.7",
+    "@tiptap/starter-kit": "^2.1.7",
+    "@tiptap/suggestion": "^2.1.7",
     "autoprefixer": "10.4.15",
+    "axios": "^1.5.0",
+    "crc-32": "^1.2.2",
+    "esbuild-wasm": "^0.19.2",
+    "highlight.js": "^11.8.0",
+    "localforage": "^1.10.0",
+    "lowlight": "^2.9.0",
+    "lucide-react": "^0.269.0",
     "next": "13.4.19",
     "postcss": "8.4.28",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sass": "^1.66.1",
+    "sonner": "^0.7.0",
     "tailwindcss": "3.3.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.5",
+    "@tailwindcss/typography": "^0.5.9"
   }
 }
