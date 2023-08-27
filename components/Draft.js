@@ -54,6 +54,11 @@ const Draft = ({ notebook }) => {
             <span className="text-gray-500 font-normal">Loading...</span>
           )}
           {!loading && notebook.id && <button onClick={save}>Save</button>}
+          {!notebook.id && (
+            <a href="https://github.com/includable/jsnotebook">
+              View on GitHub
+            </a>
+          )}
         </div>
       </div>
 
