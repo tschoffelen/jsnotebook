@@ -17,7 +17,7 @@ export default ({ node, updateAttributes }) => {
   const nodeText = useMemo(() => getText(node), [node]);
 
   return (
-    <NodeViewWrapper className="border rounded-md">
+    <NodeViewWrapper className="border rounded-md overflow-hidden">
       <pre className="m-[-1px] rounded-b-none p-6" spellcheck="false">
         <NodeViewContent as="code" />
       </pre>
