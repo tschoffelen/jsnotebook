@@ -129,20 +129,24 @@ const Preview = ({ input, attributes, updateAttributes }) => {
     });
   }, []);
 
-  const compile = useCallback(debounce(async () => {
-    input = input.trim();
-    if (!input) return;
+  const compile = useCallback(
+    debounce(async () => {
+      console.log("Compiling", input);
+      input = input.trim();
+      if (!input) return;
 
-    setLoading(true);
-    input = `window.codeRunner = async function () { \n${input}\n }`;
-    const { output, error } = await esBundle(input, true);
-    if (error) {
-      setResult([["ERR", error.toString()]]);
-    } else {
-      iframe.current?.contentWindow?.postMessage({ id, code: output }, "*");
-    }
-    setLoading(false);
-  }), []);
+      setLoading(true);
+      input = `window.codeRunner = async function () { \n${input}\n }`;
+      const { output, error } = await esBundle(input, true);
+      if (error) {
+        setResult([["ERR", error.toString()]]);
+      } else {
+        iframe.current?.contentWindow?.postMessage({ id, code: output }, "*");
+      }
+      setLoading(false);
+    }),
+    [input]
+  );
 
   return (
     <div className="preview-wrapper">
