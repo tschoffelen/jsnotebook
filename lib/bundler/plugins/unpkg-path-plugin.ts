@@ -20,8 +20,9 @@ export const unpkgPathPlugin = () => {
 
       // handle main file of a module
       build.onResolve({ filter: /.*/ }, async (args: esbuild.OnResolveArgs) => {
+        const isUrl = args.path.startsWith('https://') || args.path.startsWith('http://');
         return {
-          path: `https://unpkg.com/${args.path}`,
+          path: isUrl ? args.path : `https://unpkg.com/${args.path}`,
           namespace: "app",
         };
       });

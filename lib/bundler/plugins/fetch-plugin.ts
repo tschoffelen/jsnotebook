@@ -4,7 +4,7 @@ import axios from "axios";
 import localForage from "localforage";
 
 const fileCache = localForage.createInstance({
-  name: "filecache",
+  name: "local-filecache",
 });
 
 export const fetchPlugin = (input: string) => {
@@ -57,9 +57,15 @@ export const fetchPlugin = (input: string) => {
 
       // handle js and jsx files
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
-        const { data: contents, request } = await axios.get(args.path);
+        const { data: contents, headers, request } = await axios.get(args.path);
+        const contentType = headers["content-type"] || 'application/octet-stream';
+        let loader: esbuild.Loader = 'js';
+        if(args.path.includes('.ts')) loader = 'ts';
+        if(args.path.includes('.tsx')) loader = 'tsx';
+        if(args.path.includes('.jsx')) loader = 'jsx';
+        if(contentType.includes('text/')) loader = 'text';
         const result: esbuild.OnLoadResult = {
-          loader: "js",
+          loader,
           contents,
           resolveDir: new URL("./", request.responseURL).pathname,
         };
