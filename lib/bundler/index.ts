@@ -19,7 +19,7 @@ export const loadEsbuild = async () => {
   }
 
   if (isLoading) {
-    await new Promise((resolve) => {
+    return new Promise((resolve) => {
       const interval = setInterval(() => {
         if (!isLoading) {
           clearInterval(interval);
@@ -27,8 +27,9 @@ export const loadEsbuild = async () => {
         }
       }, 100);
     });
-    return;
   }
+
+  isLoading = true;
 
   try {
     await esbuild.initialize({
@@ -49,11 +50,13 @@ const esBundle = async (
   await loadEsbuild();
   try {
     const result = await esbuild.build({
-      entryPoints: ["index.js"],
+      entryPoints: ["input.ts"],
       bundle: true,
       minify: false,
+      format: "esm",
+      platform: "node",
       write: false,
-      plugins: [unpkgPathPlugin(), fetchPlugin(input, hasTypescript)],
+      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
       define: {
         global: "window",
       },

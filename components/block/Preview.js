@@ -136,12 +136,12 @@ const Preview = ({ input, attributes, updateAttributes }) => {
       if (!input) return;
 
       setLoading(true);
-      input = `window.codeRunner = async function () { \n${input}\n }`;
       const { output, error } = await esBundle(input, true);
       if (error) {
         setResult([["ERR", error.toString()]]);
       } else {
-        iframe.current?.contentWindow?.postMessage({ id, code: output }, "*");
+        const code = `window.codeRunner = async function () { \n${output}\n }`;
+        iframe.current?.contentWindow?.postMessage({ id, code }, "*");
       }
       setLoading(false);
     }),

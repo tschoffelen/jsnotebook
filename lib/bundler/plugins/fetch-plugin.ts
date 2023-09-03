@@ -7,14 +7,14 @@ const fileCache = localForage.createInstance({
   name: "filecache",
 });
 
-export const fetchPlugin = (input: string, hasTypescript: boolean) => {
+export const fetchPlugin = (input: string) => {
   return {
     name: "fetch-plugin",
     setup(build: esbuild.PluginBuild) {
       // handle root user input code
-      build.onLoad({ filter: /^index\.js$/ }, () => {
+      build.onLoad({ filter: /^input\.ts$/ }, () => {
         return {
-          loader: hasTypescript ? "tsx" : "jsx",
+          loader: "tsx",
           contents: input,
         };
       });

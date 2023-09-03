@@ -5,8 +5,8 @@ export const unpkgPathPlugin = () => {
     name: "unpkg-path-plugin",
     setup(build: esbuild.PluginBuild) {
       // handle root entry file of user input
-      build.onResolve({ filter: /(^index\.js$)/ }, () => {
-        return { path: "index.js", namespace: "a" };
+      build.onResolve({ filter: /(^input\.ts$)/ }, () => {
+        return { path: "input.ts", namespace: "app" };
       });
 
       // handle relative imports inside a module
@@ -14,7 +14,7 @@ export const unpkgPathPlugin = () => {
         return {
           path: new URL(args.path, "https://unpkg.com" + args.resolveDir + "/")
             .href,
-          namespace: "a",
+          namespace: "app",
         };
       });
 
@@ -22,7 +22,7 @@ export const unpkgPathPlugin = () => {
       build.onResolve({ filter: /.*/ }, async (args: esbuild.OnResolveArgs) => {
         return {
           path: `https://unpkg.com/${args.path}`,
-          namespace: "a",
+          namespace: "app",
         };
       });
     },
