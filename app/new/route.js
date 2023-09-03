@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-
 import { saveNotebook } from "@/lib/api/notebooks";
-import { NextResponse } from "next/server";
 
 export async function GET() {
   const id = await saveNotebook({
