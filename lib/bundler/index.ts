@@ -13,7 +13,7 @@ interface BundledResult {
 let loaded = false;
 let isLoading = false;
 
-const loadEsbuild = async () => {
+export const loadEsbuild = async () => {
   if (loaded) {
     return;
   }

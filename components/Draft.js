@@ -27,6 +27,18 @@ const Draft = ({ notebook }) => {
     setLoading(false);
   };
 
+  const createNew = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // create empty notebook
+    const id = await saveNotebook({
+      content: "",
+    });
+
+    window.location.href = `/${id}`;
+  };
+
   const keyboardShortcutSave = (e) => {
     if (e.key === "s" && e.metaKey) {
       e.preventDefault();
@@ -43,18 +55,30 @@ const Draft = ({ notebook }) => {
     return () => window.removeEventListener("keydown", keyboardShortcutSave);
   }, []);
 
+  useEffect(() => {
+    try {
+      loadEsbuild();
+    } catch (_) {
+      // ignore
+    }
+  }, []);
+
   return (
     <main className="min-h-screen">
       {/* --- Menu bar --- */}
       <div className="flex items-center justify-between px-4 py-3 border-b">
         <Link href="/">📘</Link>
         <div className="flex items-center gap-6 text-blue-500 text-sm font-medium">
-          <a href="/new">New</a>
+          {!loading && !notebook.id && (
+            <a href="/new" onClick={createNew}>
+              New
+            </a>
+          )}
           {loading && (
             <span className="text-gray-500 font-normal">Loading...</span>
           )}
           {!loading && notebook.id && <button onClick={save}>Save</button>}
-          {!notebook.id && (
+          {!loading && notebook.id && (
             <a href="https://github.com/includable/jsnotebook">
               View on GitHub
             </a>
