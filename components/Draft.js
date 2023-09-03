@@ -29,8 +29,7 @@ const Draft = ({ notebook }) => {
     setLoading(false);
   };
 
-  const createNew = async (e) => {
-    e.preventDefault();
+  const createNew = async () => {
     setLoading(true);
 
     // create empty notebook
@@ -71,16 +70,12 @@ const Draft = ({ notebook }) => {
       <div className="flex items-center justify-between px-4 py-3 border-b">
         <Link href="/">📘</Link>
         <div className="flex items-center gap-6 text-blue-500 text-sm font-medium">
-          {!loading && !notebook.id && (
-            <a href="/new" onClick={createNew}>
-              New
-            </a>
-          )}
+          {!loading && <button onClick={createNew}>New</button>}
           {loading && (
             <span className="text-gray-500 font-normal">Loading...</span>
           )}
           {!loading && notebook.id && <button onClick={save}>Save</button>}
-          {!loading && notebook.id && (
+          {!loading && !notebook.id && (
             <a href="https://github.com/includable/jsnotebook">
               View on GitHub
             </a>
