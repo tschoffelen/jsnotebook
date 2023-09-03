@@ -71,10 +71,13 @@ const html = `
               (async () => {
                 try {
                   eval(code);
+                  const startDate = new Date();
                   const result = await window.codeRunner();
+                  const endDate = new Date();
                   if (result !== undefined) {
                     hist.push(['RESULT', anythingToString(result)]);
                   }
+                  hist.unshift(['TIME', (endDate - startDate)]);
                 } catch(error) {
                   handleError(error);
                 }
