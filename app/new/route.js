@@ -1,11 +1,15 @@
-import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 import { saveNotebook } from "@/lib/api/notebooks";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const id = await saveNotebook({
     content: "",
   });
 
-  redirect(`/${id}`);
+  const headers = new Headers();
+  headers.set("Cache-Control", "no-store, max-age=0");
+
+  return NextResponse.redirect(`/${id}`, { headers, status: 307 });
 }
