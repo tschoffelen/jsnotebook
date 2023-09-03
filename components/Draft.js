@@ -6,11 +6,13 @@ import Link from "next/link";
 
 import Editor from "@/components/Editor";
 import { saveNotebook } from "@/lib/api/notebooks";
+import { loadEsbuild } from "@/lib/bundler";
 
 const Draft = ({ notebook }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState(notebook.content);
+  const [title, setTitle] = useState(notebook.title || 'Untitled notebook');
 
   const save = async () => {
     setLoading(true);
@@ -18,6 +20,7 @@ const Draft = ({ notebook }) => {
     try {
       await saveNotebook({
         ...notebook,
+        title,
         content,
       });
     } catch (e) {
@@ -34,7 +37,7 @@ const Draft = ({ notebook }) => {
 
     // create empty notebook
     const id = await saveNotebook({
-      content: "",
+      content: "<p></p><p></p><p></p>"
     });
 
     router.push(`/${id}`);
@@ -86,6 +89,14 @@ const Draft = ({ notebook }) => {
       {/* --- Editor --- */}
       <div className="flex flex-col items-center justify-between">
         <div className="max-w-5xl w-full">
+          <div className="p-12 md:p-24 pb-0 md:pb-0">
+            <input
+              type="text"
+              className="w-full border-0 shadow-none text-5xl p-2 -m-2 rounded-md font-extrabold text-gray-900"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
           <Editor content={notebook.content} onUpdate={setContent} />
         </div>
       </div>

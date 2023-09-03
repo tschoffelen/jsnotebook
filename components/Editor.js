@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
 import { EditorContent, useEditor, ReactNodeViewRenderer } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
@@ -19,14 +19,8 @@ import debounce from "@/lib/hooks/debounce";
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
 
-const CustomDocument = Document.extend({
-  content: "heading block*",
-});
-
 const extensions = [
-  CustomDocument,
   StarterKit.configure({
-    document: false,
     bulletList: {
       HTMLAttributes: {
         class: "-mt-2",
@@ -96,8 +90,14 @@ const Editor = ({ content, onUpdate }) => {
     onUpdate: debounce((e) => {
       onUpdate(e.editor.getHTML());
     }),
-    autofocus: content === "" ? "end" : false,
+    autofocus: !content ? 'start' : false,
   });
+
+  useEffect(() => {
+    if (editor && content === '<p></p><p></p><p></p>') {
+      editor.commands.focus();
+    }
+  }, [editor, content]);
 
   return (
     <div className="prose max-w-none">
