@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import Editor from "@/components/Editor";
 import { saveNotebook } from "@/lib/api/notebooks";
 
 const Draft = ({ notebook }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState(notebook.content);
 
@@ -36,7 +38,7 @@ const Draft = ({ notebook }) => {
       content: "",
     });
 
-    window.location.href = `/${id}`;
+    router.push(`/${id}`);
   };
 
   const keyboardShortcutSave = (e) => {
