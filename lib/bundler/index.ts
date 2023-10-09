@@ -34,7 +34,7 @@ export const loadEsbuild = async () => {
   try {
     await esbuild.initialize({
       worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm/esbuild.wasm",
+      wasmURL: "https://unpkg.com/esbuild-wasm@0.19.2/esbuild.wasm",
     });
     loaded = true;
   } catch (error) {
